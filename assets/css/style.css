@@ -1,6 +1,6 @@
 :root {
       --primary: #2c3e50;
-      --secondary: #3498db;
+      --secondary:rgb(93, 134, 238);
       --success: #27ae60;
       --warning: #f39c12;
       --danger: #e74c3c;
@@ -22,7 +22,7 @@
     }
     
     .hero-section {
-      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      background: linear-gradient(135deg,rgb(21, 4, 4),rgb(143, 16, 16),black);
       color: white;
       padding: 3rem 0;
       margin-bottom: 2rem;
@@ -134,6 +134,17 @@
       border-radius: 50%;
       display: inline-block;
       margin-right: 0.5rem;
+    }
+
+    .text-light-red {
+        background: linear-gradient(90deg, black,red);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    } 
+
+    .bg-text-light-red{
+        width: 40px; height: 40px;
+        background: linear-gradient(90deg, black,red); 
     }
     
     .priority-high {
