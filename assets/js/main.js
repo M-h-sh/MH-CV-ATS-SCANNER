@@ -53,12 +53,61 @@ createApp({
       },
       dates: {
         patterns: [
-          { regex: /\b\d{1,2}\/\d{4}\s*(?:-|to)\s*\d{1,2}\/\d{4}\b/g, label: "Good date range format (MM/YYYY - MM/YYYY)", score: 1 },
-          { regex: /\b\d{1,2}\/\d{4}\b/g, label: "Good date format (MM/YYYY)", score: 0.8 },
-          { regex: /(?:jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[a-z]*\s+\d{4}/gi, label: "Text month abbreviations", score: 0.5 },
-          { regex: /(?:january|february|march|april|may|june|july|august|september|october|november|december)\s+\d{4}/gi, label: "Full month names", score: 0.3 },
-          { regex: /\d{1,2}\s+(?:jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[a-z]*\s+\d{4}/gi, label: "Day included in dates", score: 0.2 },
-          { regex: /\bpresent\b/gi, label: "Using 'Present' for current position", score: 0.1 }
+          // Best format (MM/YYYY - MM/YYYY or MM/YYYY - Present)
+          { 
+            regex: /\b\d{1,2}\/\d{4}\s*(?:-|to)\s*(?:\d{1,2}\/\d{4}|present)\b/gi, 
+            label: "Excellent date range format (MM/YYYY - MM/YYYY or MM/YYYY - Present)", 
+            score: 1 
+          },
+          
+          // Single date (MM/YYYY)
+          { 
+            regex: /\b\d{1,2}\/\d{4}\b/g, 
+            label: "Good date format (MM/YYYY)", 
+            score: 0.8 
+          },
+          
+          // Month abbreviation range (MMM YYYY - MMM YYYY or MMM YYYY - Present)
+          { 
+            regex: /(?:jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[a-z]*\s+\d{4}\s*(?:-|to)\s*(?:(?:jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[a-z]*\s+\d{4}|present)/gi, 
+            label: "Text month abbreviations with range", 
+            score: 0.6 
+          },
+          
+          // Single month abbreviation (MMM YYYY)
+          { 
+            regex: /(?:jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[a-z]*\s+\d{4}/gi, 
+            label: "Text month abbreviations", 
+            score: 0.5 
+          },
+          
+          // Full month name range (Month YYYY - Month YYYY or Month YYYY - Present)
+          { 
+            regex: /(?:january|february|march|april|may|june|july|august|september|october|november|december)\s+\d{4}\s*(?:-|to)\s*(?:(?:january|february|march|april|may|june|july|august|september|october|november|december)\s+\d{4}|present)/gi, 
+            label: "Full month names with range", 
+            score: 0.4 
+          },
+          
+          // Single full month name (Month YYYY)
+          { 
+            regex: /(?:january|february|march|april|may|june|july|august|september|october|november|december)\s+\d{4}/gi, 
+            label: "Full month names", 
+            score: 0.3 
+          },
+          
+          // Day included (DD MMM YYYY - DD MMM YYYY or DD MMM YYYY - Present)
+          { 
+            regex: /\d{1,2}\s+(?:jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[a-z]*\s+\d{4}\s*(?:-|to)\s*(?:\d{1,2}\s+(?:jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[a-z]*\s+\d{4}|present)/gi, 
+            label: "Day included in dates with range", 
+            score: 0.2 
+          },
+          
+          // Standalone "Present"
+          { 
+            regex: /\bpresent\b/gi, 
+            label: "Using 'Present' for current position", 
+            score: 0.1 
+          }
         ],
         recommendation: "Use MM/YYYY format (e.g., 03/2023 - 08/2023) for best ATS compatibility"
       },
@@ -82,7 +131,7 @@ createApp({
         "hard working", "team player", "detail oriented", "self motivated",
         "go getter", "think outside the box", "synergy", "value add",
         "results driven", "fast learner", "excellent communicator",
-        "dynamic", "proactive", "passionate", "innovative", "strategic",
+        "dynamic", "proactive", "innovative", "strategic",
         "proven track record", "seasoned professional", "go-to person"
       ],
       formatting: {
@@ -176,7 +225,7 @@ createApp({
         minContrast: 4.5, // WCAG AA standard
         professionalFonts: [
           'Arial', 'Helvetica', 'Times New Roman', 
-          'Georgia', 'Calibri', 'Garamond'
+          'Georgia', 'Calibri', 'Garamond', 'poppins'
         ],
         maxFontSizes: 2, // Stricter font size limit
         standardFontSizes: {
