@@ -3,20 +3,19 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MH CV Excellence Scanner | ATS Optimizer & Readability Checker</title>
+  <title>Ultimate CV Scanner | World's Strictest ATS Checker</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="stylesheet" href="assets/css/style.css">
   <link rel="icon" href="assets/images/mh_logo.png" type="image/png">
-  <link rel="shortcut icon" href="assets/images/mh_logo.png" type="image/x-icon">
 </head>
 <body>
   <div id="app">
     <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
       <div class="container">
         <a class="navbar-brand text-dark" href="#">
-          <i class="fas fa-file-alt me-2 text-light-red"></i>MH CV Optimization
+          <i class="fas fa-file-alt me-2 text-light-red"></i>Ultimate CV Scanner
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
           <span class="navbar-toggler-icon"></span>
@@ -36,8 +35,8 @@
 
     <div class="hero-section">
       <div class="container text-center">
-        <h1 class="display-5 fw-bold mb-3">Optimize Your CV for ATS & Human Readers</h1>
-        <p class="lead mb-4">Get instant feedback on how to improve your CV's chances of getting noticed</p>
+        <h1 class="display-5 fw-bold mb-3">The World's Strictest CV Scanner</h1>
+        <p class="lead mb-4">Get brutally honest feedback to create the perfect, ATS-dominating CV</p>
       </div>
     </div>
 
@@ -99,13 +98,21 @@
                 <span>Impact Score</span>
                 <span>{{ impactScore }}%</span>
               </div>
-              <div class="progress">
+              <div class="progress mb-3">
                 <div class="progress-bar" role="progressbar" :style="{ width: impactScore + '%' }"></div>
+              </div>
+              
+              <div class="d-flex justify-content-between mb-2">
+                <span>Design Quality</span>
+                <span>{{ designScore }}%</span>
+              </div>
+              <div class="progress">
+                <div class="progress-bar" role="progressbar" :style="{ width: designScore + '%' }"></div>
               </div>
             </div>
             
             <div class="score-card">
-              <h5>Quick Fixes</h5>
+              <h5>Critical Fixes</h5>
               <div v-for="(fix, index) in quickFixes" :key="'fix-'+index" class="mb-2">
                 <span class="priority-indicator" :class="'priority-' + fix.priority"></span>
                 <strong>{{ fix.message }}</strong>
@@ -127,10 +134,13 @@
                 <button class="nav-link" id="pills-keywords-tab" data-bs-toggle="pill" data-bs-target="#pills-keywords" type="button" role="tab">Keywords</button>
               </li>
               <li class="nav-item" role="presentation">
-                <button class="nav-link" id="pills-tips-tab" data-bs-toggle="pill" data-bs-target="#pills-tips" type="button" role="tab">Tips</button>
+                <button class="nav-link" id="pills-design-tab" data-bs-toggle="pill" data-bs-target="#pills-design" type="button" role="tab">Design</button>
               </li>
               <li class="nav-item" role="presentation">
-                <button class="nav-link" id="pills-makeover-tab" data-bs-toggle="pill" data-bs-target="#pills-makeover" type="button" role="tab">CV Makeover</button>
+                <button class="nav-link" id="pills-structure-tab" data-bs-toggle="pill" data-bs-target="#pills-structure" type="button" role="tab">Structure</button>
+              </li>
+              <li class="nav-item" role="presentation">
+                <button class="nav-link" id="pills-tips-tab" data-bs-toggle="pill" data-bs-target="#pills-tips" type="button" role="tab">Tips</button>
               </li>
             </ul>
             
@@ -153,22 +163,22 @@
                     <div v-else class="text-muted">No significant strengths identified</div>
                   </div>
                   <div class="col-md-6">
-                    <h5 class="section-header">Areas for Improvement</h5>
+                    <h5 class="section-header">Critical Improvements</h5>
                     <div v-if="uniqueImprovements.length > 0">
                       <div v-for="(improvement, index) in uniqueImprovements" :key="'improvement-'+index" class="d-flex mb-2">
                         <i class="fas fa-exclamation-circle text-warning me-2 mt-1"></i>
                         <span>{{ improvement }}</span>
                       </div>
                     </div>
-                    <div v-else class="text-muted">No significant improvements needed</div>
+                    <div v-else class="text-muted">No critical improvements needed</div>
                   </div>
                 </div>
               </div>
               
               <div class="tab-pane fade" id="pills-issues" role="tabpanel">
-                <h4 class="section-header">Identified Issues</h4>
+                <h4 class="section-header">Content Issues</h4>
                 <div class="mb-4">
-                  <h5>Content Issues</h5>
+                  <h5>Content Problems</h5>
                   <div v-if="contentIssues.length > 0">
                     <div v-for="(issue, index) in contentIssues" :key="'content-'+index" class="issue-card">
                       <div class="d-flex justify-content-between align-items-start">
@@ -257,6 +267,104 @@
                 </div>
               </div>
               
+              <div class="tab-pane fade" id="pills-design" role="tabpanel">
+                <h4 class="section-header">Design Analysis</h4>
+                <div v-if="designIssues.length > 0">
+                  <div v-for="(issue, index) in designIssues" :key="'design-'+index" class="design-issue-card mb-3 p-3">
+                    <div class="d-flex align-items-start">
+                      <span class="priority-indicator" :class="'priority-' + issue.priority"></span>
+                      <div>
+                        <strong>{{ issue.message }}</strong>
+                        <p class="mb-0 mt-1">{{ issue.fix }}</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div v-else class="design-good-card p-3 mb-3">
+                  <strong>Great design!</strong>
+                  <p class="mb-0">Your CV follows professional design principles.</p>
+                </div>
+                
+                <div class="mt-4">
+                  <h5>Color Usage</h5>
+                  <div v-if="colorAnalysis.length > 0" class="mb-3">
+                    <p>Detected colors in your CV:</p>
+                    <div v-for="(color, index) in colorAnalysis" :key="'color-'+index" class="d-flex align-items-center mb-2">
+                      <div class="color-swatch" :style="{ backgroundColor: color }"></div>
+                      <span>{{ color }}</span>
+                    </div>
+                  </div>
+                  <div v-else class="text-muted">No specific colors detected</div>
+                </div>
+                
+                <div class="mt-4">
+                  <h5>Contrast Analysis</h5>
+                  <div v-if="contrastAnalysis.length > 0">
+                    <div v-for="(contrast, index) in contrastAnalysis" :key="'contrast-'+index" class="mb-2">
+                      <span>Text: {{ contrast.textColor }} on Background: {{ contrast.bgColor }}</span>
+                      <span class="ms-2 contrast-ratio" :class="contrast.ratio >= 4.5 ? 'contrast-good' : 'contrast-poor'">
+                        Ratio: {{ contrast.ratio }}:1
+                      </span>
+                      <span v-if="contrast.ratio < 4.5" class="ms-2 text-danger small">
+                        (Below WCAG AA standard)
+                      </span>
+                    </div>
+                  </div>
+                  <div v-else class="text-muted">No contrast issues detected</div>
+                </div>
+              </div>
+              
+              <div class="tab-pane fade" id="pills-structure" role="tabpanel">
+                <h4 class="section-header">Structure Analysis</h4>
+                <div class="mb-4">
+                  <h5>Section Order</h5>
+                  <p>The ideal professional CV section order is:</p>
+                  <ul class="section-order-list">
+                    <li v-for="(section, index) in sectionOrderAnalysis.ideal" :key="'ideal-'+index" 
+                        class="section-order-item" :class="sectionOrderAnalysis.current[index] === section ? 'section-correct' : 'section-incorrect'">
+                      {{ index + 1 }}. {{ section.charAt(0).toUpperCase() + section.slice(1) }}
+                    </li>
+                  </ul>
+                  
+                  <div v-if="sectionOrderAnalysis.issues.length > 0" class="mt-3">
+                    <div v-for="(issue, index) in sectionOrderAnalysis.issues" :key="'order-issue-'+index" class="issue-card">
+                      <div class="d-flex align-items-start">
+                        <span class="priority-indicator" :class="'priority-' + issue.priority"></span>
+                        <div>
+                          <strong>{{ issue.message }}</strong>
+                          <p class="mb-0 mt-1">{{ issue.fix }}</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+                <div>
+                  <h5>Quantification of Achievements</h5>
+                  <div v-if="quantificationAnalysis.issues.length > 0" class="issue-card">
+                    <div class="d-flex align-items-start">
+                      <span class="priority-indicator priority-high"></span>
+                      <div>
+                        <strong>{{ quantificationAnalysis.issues[0].message }}</strong>
+                        <p class="mb-1 mt-1">{{ quantificationAnalysis.issues[0].fix }}</p>
+                        <div v-if="quantificationAnalysis.issues[0].examples" class="mt-2">
+                          <strong>Examples needing quantification:</strong>
+                          <ul class="mt-1">
+                            <li v-for="(example, index) in quantificationAnalysis.issues[0].examples" :key="'example-'+index">
+                              {{ example }}
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div v-else class="issue-card fix-card">
+                    <strong>Excellent quantification!</strong>
+                    <p class="mb-0">{{ quantificationAnalysis.ratio }}% of your bullet points include measurable achievements.</p>
+                  </div>
+                </div>
+              </div>
+              
               <div class="tab-pane fade" id="pills-tips" role="tabpanel">
                 <h4 class="section-header">Optimization Tips</h4>
                 <div>
@@ -294,54 +402,6 @@
                   </div>
                 </div>
               </div>
-              
-              <div class="tab-pane fade" id="pills-makeover" role="tabpanel">
-                <h4 class="section-header">CV Makeover Examples</h4>
-                
-                <div class="cv-makeover">
-                  <div class="cv-makeover-title">Professional Summary</div>
-                  <div class="cv-makeover-before">
-                    <strong>Before:</strong> Experienced professional with skills in management and customer service.
-                  </div>
-                  <div class="cv-makeover-after">
-                    <strong>After:</strong> Results-driven manager with 8+ years of experience leading high-performing teams and delivering exceptional customer experiences. Specialized in process optimization and team development, with a track record of increasing customer satisfaction scores by 25% and reducing operational costs by 15%.
-                  </div>
-                </div>
-                
-                <div class="cv-makeover">
-                  <div class="cv-makeover-title">Work Experience (Sales)</div>
-                  <div class="cv-makeover-before">
-                    <strong>Before:</strong> Worked in sales and met targets.
-                  </div>
-                  <div class="cv-makeover-after">
-                    <strong>After:</strong> Exceeded quarterly sales targets by 35% on average through strategic client acquisition and relationship management. Ranked #1 out of 25 sales representatives for 3 consecutive quarters. Developed and implemented a new sales training program that increased team performance by 22%.
-                  </div>
-                </div>
-                
-                <div class="cv-makeover">
-                  <div class="cv-makeover-title">Work Experience (IT)</div>
-                  <div class="cv-makeover-before">
-                    <strong>Before:</strong> Did software development and fixed bugs.
-                  </div>
-                  <div class="cv-makeover-after">
-                    <strong>After:</strong> Developed and maintained 5 enterprise-level applications using Java and Spring Boot, reducing system downtime by 40%. Led a team of 4 developers to implement CI/CD pipelines that decreased deployment time by 65%. Identified and resolved critical performance bottlenecks that improved application response time by 300ms.
-                  </div>
-                </div>
-                
-                <div class="cv-makeover">
-                  <div class="cv-makeover-title">Education Section</div>
-                  <div class="cv-makeover-before">
-                    <strong>Before:</strong> University of XYZ - Business Administration
-                  </div>
-                  <div class="cv-makeover-after">
-                    <strong>After:</strong> Bachelor of Science in Business Administration<br>
-                    University of XYZ | Graduated: 05/2018<br>
-                    • GPA: 3.7/4.0 (Magna Cum Laude)<br>
-                    • Relevant Coursework: Financial Accounting, Business Statistics, Marketing Principles<br>
-                    • President, Business Students Association (2017-2018)
-                  </div>
-                </div>
-              </div>
             </div>
           </div>
         </div>
@@ -351,30 +411,39 @@
     <div class="container my-5" id="features">
       <h2 class="text-center mb-4">Key Features</h2>
       <div class="row">
-        <div class="col-md-4 mb-4">
+        <div class="col-md-3 mb-4">
           <div class="card h-100 border-0 shadow-sm">
             <div class="card-body text-center">
               <i class="fas fa-robot fa-3x mb-3 text-light-red"></i>
               <h5 class="card-title">ATS Optimization</h5>
-              <p class="card-text">Ensure your CV passes through applicant tracking systems with flying colors.</p>
+              <p class="card-text">Strictest ATS compatibility checks in the industry.</p>
             </div>
           </div>
         </div>
-        <div class="col-md-4 mb-4">
+        <div class="col-md-3 mb-4">
           <div class="card h-100 border-0 shadow-sm">
             <div class="card-body text-center">
-              <i class="fas fa-eye fa-3x mb-3  text-light-red"></i>
+              <i class="fas fa-eye fa-3x mb-3 text-light-red"></i>
               <h5 class="card-title">Readability Scan</h5>
-              <p class="card-text">Make sure your CV is easy to read and engaging for human reviewers.</p>
+              <p class="card-text">Comprehensive readability analysis at sentence level.</p>
             </div>
           </div>
         </div>
-        <div class="col-md-4 mb-4">
+        <div class="col-md-3 mb-4">
           <div class="card h-100 border-0 shadow-sm">
             <div class="card-body text-center">
               <i class="fas fa-bullseye fa-3x mb-3 text-light-red"></i>
               <h5 class="card-title">Impact Analysis</h5>
-              <p class="card-text">Identify opportunities to make your achievements stand out more.</p>
+              <p class="card-text">Quantification of achievements and strong verbs.</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3 mb-4">
+          <div class="card h-100 border-0 shadow-sm">
+            <div class="card-body text-center">
+              <i class="fas fa-paint-brush fa-3x mb-3 text-light-red"></i>
+              <h5 class="card-title">Design Audit</h5>
+              <p class="card-text">Professional design and structure evaluation.</p>
             </div>
           </div>
         </div>
@@ -400,8 +469,8 @@
                 <div class="bg-text-light-red text-white rounded-circle d-flex align-items-center justify-content-center">2</div>
               </div>
               <div>
-                <h5>Instant Analysis</h5>
-                <p class="mb-0">Our system scans your CV in seconds, checking for ATS compatibility, readability, and impact.</p>
+                <h5>Comprehensive Analysis</h5>
+                <p class="mb-0">Our system performs 50+ checks on your CV in seconds, examining content, structure, design, and ATS compatibility.</p>
               </div>
             </div>
             <div class="d-flex align-items-start">
@@ -410,7 +479,7 @@
               </div>
               <div>
                 <h5>Get Actionable Feedback</h5>
-                <p class="mb-0">Receive specific recommendations to improve your CV's chances of getting noticed.</p>
+                <p class="mb-0">Receive specific, prioritized recommendations to transform your CV into an ATS-dominating document.</p>
               </div>
             </div>
           </div>
@@ -419,15 +488,16 @@
     </div>
 
     <footer class="bg-dark text-white py-4">
-        <div class="container text-center">
-            <p class="mb-0">MH CV Excellence Scanner &copy; <span id="current-year"></span> | Helping job seekers create better resumes</p>
-        </div>
+      <div class="container text-center">
+        <p class="mb-0">Ultimate CV Scanner &copy; {{ currentYear }} | Helping professionals create winning resumes</p>
+      </div>
     </footer>
 
     <div class="floating-action-btn bg-text-light-red" @click="scrollToTop" title="Scroll to top" v-show="showScrollToTop">
-      <i class="fas fa-arrow-up "></i>
+      <i class="fas fa-arrow-up"></i>
     </div>
   </div>
+
   <script src="https://cdn.jsdelivr.net/npm/vue@3.2.47/dist/vue.global.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.4.120/pdf.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.4.0/mammoth.browser.min.js"></script>
