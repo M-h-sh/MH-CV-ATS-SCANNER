@@ -46,7 +46,7 @@ createApp({
           { name: "full_name", patterns: [/^[A-Z][a-z]+ [A-Z][a-z]+$/], required: true },
           { name: "contact_info", patterns: [/(phone|mobile|tel)|(email|e-mail)|(linkedin|github)/i], required: true },
           { name: "work_experience", patterns: [/(work|professional|employment) (history|experience)/i], required: true },
-          { name: "education", patterns: [/(education|academic background|qualifications)/i], required: true }
+          { name: "education", patterns: [/(education|academic background|qualifications|educational background|)/i], required: true }
         ],
         minLength: 300, // Minimum characters to be considered a CV
         professionalToneThreshold: 0.7 // 70% of content should be professional tone
@@ -102,12 +102,6 @@ createApp({
             score: 0.2 
           },
           
-          // Standalone "Present"
-          { 
-            regex: /\bpresent\b/gi, 
-            label: "Using 'Present' for current position", 
-            score: 0.1 
-          }
         ],
         recommendation: "Use MM/YYYY format (e.g., 03/2023 - 08/2023) for best ATS compatibility"
       },
@@ -239,33 +233,105 @@ createApp({
         ]
       },
       experienceDepth: {
-        minBullets: 3,
+        minBullets: 2,
         maxBullets: 6,
-        minWordsPerBullet: 8,
-        maxWordsPerBullet: 20,
-        recommendation: "Each position should have 3-6 bullet points with 8-20 words each, focusing on achievements with metrics"
+        minWordsPerBullet: 5,
+        maxWordsPerBullet: 26,
+        recommendation: "Each position should have 2-6 bullet points with 8-26 words each, focusing on achievements with metrics"
       },
       spelling: {
         commonErrors: [
-          { incorrect: "responsable", correct: "responsible" },
-          { incorrect: "experiance", correct: "experience" },
-          { incorrect: "acheivement", correct: "achievement" },
-          { incorrect: "collaborate", correct: "collaborate" },
-          { incorrect: "managment", correct: "management" },
-          { incorrect: "communcation", correct: "communication" },
-          { incorrect: "profesional", correct: "professional" },
-          { incorrect: "accomodate", correct: "accommodate" },
-          { incorrect: "definately", correct: "definitely" },
-          { incorrect: "seperate", correct: "separate" }
+            { incorrect: "responsable", correct: "responsible" },
+            { incorrect: "experiance", correct: "experience" },
+            { incorrect: "acheivement", correct: "achievement" },
+            { incorrect: "collaberate", correct: "collaborate" }, // Fixed note: common typo
+            { incorrect: "managment", correct: "management" },
+            { incorrect: "communcation", correct: "communication" },
+            { incorrect: "profesional", correct: "professional" },
+            { incorrect: "accomodate", correct: "accommodate" },
+            { incorrect: "definately", correct: "definitely" },
+            { incorrect: "seperate", correct: "separate" },
+            { incorrect: "recieve", correct: "receive" },
+            { incorrect: "occured", correct: "occurred" },
+            { incorrect: "alot", correct: "a lot" },
+            { incorrect: "wich", correct: "which" },
+            { incorrect: "untill", correct: "until" },
+            { incorrect: "dissapoint", correct: "disappoint" },
+            { incorrect: "embarass", correct: "embarrass" },
+            { incorrect: "maintainance", correct: "maintenance" },
+            { incorrect: "neccessary", correct: "necessary" },
+            { incorrect: "perserverance", correct: "perseverance" },
+            { incorrect: "therefor", correct: "therefore" },
+            { incorrect: "loose", correct: "lose" },
+            { incorrect: "your", correct: "you're" }, // Context-dependent!
+            { incorrect: "it's", correct: "its" },    // Context-dependent!
+            { incorrect: "then", correct: "than" }
         ]
       },
       grammar: {
         commonErrors: [
-          { pattern: /i\s+(?:was|am|have)/gi, fix: "Use first-person pronouns sparingly in CVs" },
-          { pattern: /\b(?:alot)\b/gi, fix: "Should be 'a lot'" },
-          { pattern: /\b(?:could of|would of|should of)\b/gi, fix: "Should be 'could have', 'would have', 'should have'" },
-          { pattern: /between you and I/gi, fix: "Should be 'between you and me'" },
-          { pattern: /less\s+\w+?s\b/gi, fix: "Use 'fewer' for countable items" }
+          { 
+            pattern: /i\s+(?:was|am|have)/gi, 
+            fix: "Use first-person pronouns sparingly in CVs. Rewrite as 'Led projects' instead of 'I led projects'." 
+          },
+          { 
+            pattern: /\b(?:alot)\b/gi, 
+            fix: "Should be 'a lot'" 
+          },
+          { 
+            pattern: /\b(?:could of|would of|should of)\b/gi, 
+            fix: "Should be 'could have', 'would have', or 'should have'" 
+          },
+          { 
+            pattern: /between you and I/gi, 
+            fix: "Should be 'between you and me' (objective case)" 
+          },
+          { 
+            pattern: /less\s+\w+?s\b/gi, 
+            fix: "Use 'fewer' for countable items (e.g., 'fewer tasks', not 'less tasks')" 
+          },
+        
+          // New additions:
+          { 
+            pattern: /\b(?:their|they're|there)\b/gi, 
+            fix: "Homophone error. Check: 'their' (possession), 'they're' (they are), 'there' (location)" 
+          },
+          { 
+            pattern: /\b(?:its|it's)\b/gi, 
+            fix: "Homophone error. 'Its' (possession) vs. 'it's' (it is)" 
+          },
+          { 
+            pattern: /\b(?:affect|effect)\b/gi, 
+            fix: "'Affect' (verb, to influence) vs. 'effect' (noun, result)" 
+          },
+          { 
+            pattern: /\b(?:comprised of)\b/gi, 
+            fix: "Should be 'composed of' or 'comprises' (avoid 'comprised of')" 
+          },
+          { 
+            pattern: /more\s+\w+?er\b/gi, 
+            fix: "Redundant comparison (e.g., 'more better' → 'better')" 
+          },
+          { 
+            pattern: /\b(?:literally)\b/gi, 
+            fix: "Often misused. Ensure it's not exaggerating (e.g., 'I literally died' → incorrect)" 
+          },
+          { 
+            pattern: /\b(?:irregardless)\b/gi, 
+            fix: "Should be 'regardless' (non-standard word)" 
+          },
+          { 
+            pattern: /\b(?:suppose to)\b/gi, 
+            fix: "Should be 'supposed to'" 
+          },
+          { 
+            pattern: /\b(?:use to)\b/gi, 
+            fix: "Should be 'used to'" 
+          },
+          { 
+            pattern: /,\s+which\s+is\s+why/gi, 
+            fix: "Wordy. Consider shortening (e.g., ', so')" 
+          }
         ]
       }
     };
@@ -835,7 +901,7 @@ createApp({
       if (!experienceSections || experienceSections.length === 0) {
         results.issues.push({
           message: "No detailed work experience section found",
-          fix: "Add a detailed work experience section with 3-6 bullet points per position",
+          fix: "Add a detailed work experience section with 2-6 bullet points per position",
           example: "For each position, include achievements with metrics like 'Increased sales by 30% in Q2 2021'",
           priority: "high",
           count: 1,
@@ -856,7 +922,7 @@ createApp({
         if (bulletPoints.length < analysisRules.experienceDepth.minBullets) {
           results.issues.push({
             message: `Position has too few bullet points (${bulletPoints.length})`,
-            fix: `Add more achievements to reach 3-6 bullet points per position`,
+            fix: `Add more achievements to reach 2-6 bullet points per position`,
             example: "Include specific accomplishments with metrics for each role",
             priority: "medium",
             count: 1,
@@ -867,7 +933,7 @@ createApp({
         if (bulletPoints.length > analysisRules.experienceDepth.maxBullets) {
           results.issues.push({
             message: `Position has too many bullet points (${bulletPoints.length})`,
-            fix: `Reduce to 3-6 most relevant and impactful bullet points`,
+            fix: `Reduce to 2-6 most relevant and impactful bullet points`,
             example: "Keep only the most significant achievements for each role",
             priority: "low",
             count: 1,
@@ -880,7 +946,7 @@ createApp({
           if (wordCount < analysisRules.experienceDepth.minWordsPerBullet) {
             results.issues.push({
               message: `Bullet point is too short (${wordCount} words)`,
-              fix: `Expand bullet points to 8-20 words with more details`,
+              fix: `Expand bullet points to 8-26 words with more details`,
               example: "Add metrics and specifics to each achievement",
               priority: "medium",
               count: 1,
@@ -891,7 +957,7 @@ createApp({
           if (wordCount > analysisRules.experienceDepth.maxWordsPerBullet) {
             results.issues.push({
               message: `Bullet point is too long (${wordCount} words)`,
-              fix: `Shorten bullet points to 8-20 words for better readability`,
+              fix: `Shorten bullet points to 8-26 words for better readability`,
               example: "Break long bullet points into multiple concise ones",
               priority: "low",
               count: 1,
