@@ -319,3 +319,7 @@ body {
     padding: 0.5rem;
   }
 }
+
+.text-xxs{
+  font-size:13px;
+}

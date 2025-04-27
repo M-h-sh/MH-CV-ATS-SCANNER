@@ -1,23 +1,70 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <!-- Primary Meta Tags -->
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MH Ultimate CV Scanner | World's Strictest ATS Checker</title>
+  <title>ATS Resume Checker - World's Strictest CV Scanner | MH CV Scanner</title>
+  <meta name="description" content="Free ATS resume checker that brutally analyzes your CV for compatibility with applicant tracking systems. Get instant feedback on keywords, formatting, and readability to dominate job applications.">
+  <meta name="keywords" content="ATS resume checker, CV scanner, resume optimization, ATS compatibility, job application tool, resume formatting, CV analysis">
+
+  <!-- Open Graph / Social Meta (for LinkedIn/Twitter sharing) -->
+  <meta property="og:title" content="ATS Resume Checker - World's Strictest CV Scanner">
+  <meta property="og:description" content="Free tool to scan your resume for ATS compatibility issues. Get instant feedback to optimize your CV for job applications.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://mh-cv-ats-scanner.vercel.app">
+  <meta property="og:image" content="https://mh-cv-ats-scanner.vercel.app/assets/images/mh_logo">
+  <meta property="og:site_name" content="MH CV Scanner">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="ATS Resume Checker - World's Strictest CV Scanner">
+  <meta name="twitter:description" content="Free tool to scan your resume for ATS compatibility issues. Optimize your CV in minutes.">
+  <meta name="twitter:image" content="https://mh-cv-ats-scanner.vercel.app/assets/images/mh_logo">
+
+  <!-- Canonical URL -->
+  <link rel="canonical" href="https://mh-cv-ats-scanner.vercel.app/">
+
+  <!-- Favicon -->
+  <link rel="icon" href="assets/images/mh_logo.png" type="image/png">
+
+  <!-- Preload Critical Resources -->
+  <link rel="preload" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" as="style">
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" as="font" crossorigin>
+  <link rel="preload" href="assets/css/style.css" as="style">
+
+  <!-- CSS -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="stylesheet" href="assets/css/style.css">
-  <link rel="icon" href="assets/images/mh_logo.png" type="image/png">
+
+  <!-- Schema.org Markup (for rich snippets) -->
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "ATS Resume Checker",
+      "description": "Free tool to analyze resume compatibility with applicant tracking systems (ATS).",
+      "url": "https://yourdomain.com",
+      "applicationCategory": "CareerTool",
+      "operatingSystem": "Web",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      }
+    }
+  </script>
 </head>
 <body>
   <div id="app">
     <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
       <div class="container">
         <a class="navbar-brand text-dark" href="#">
-          <i class="fas fa-file-alt me-2 text-light-red"></i>MH Ultimate CV Scanner
+          <i class="fas fa-file-alt me-2 text-light-red"></i>MH CV Scanner
         </a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <button class="navbar-toggler border border-0  text-light-red text-xxs" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">

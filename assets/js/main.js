@@ -129,18 +129,67 @@ createApp({
         "proven track record", "seasoned professional", "go-to person"
       ],
       formatting: {
-        issues: [
-          { regex: /<table|<td|<tr|border=|cellpadding|cellspacing/i, label: "Tables detected", penalty: 10 },
-          { regex: /column|multicolumn/i, label: "Multi-column layout", penalty: 8 },
-          { regex: /header|footer/i, label: "Headers/footers", penalty: 5 },
-          { regex: /<img|image|photo|graphic|\.jpg|\.png/i, label: "Images/graphics", penalty: 15 },
-          { regex: /●|■|★|→|◇|♠|♥|♦|♣/g, label: "Fancy bullet points", penalty: 3 },
-          { regex: /[^\x00-\x7F]+/g, label: "Special characters/emojis", penalty: 5 },
-          { regex: /\n{4,}/g, label: "Excessive blank space", penalty: 2 },
-          { regex: / {3,}/g, label: "Inconsistent spacing", penalty: 2 },
-          { regex: /font-family|font-size|text-align|margin|padding|color=/i, label: "Inline styling", penalty: 5 },
-          { regex: /[A-Z]{3,}/g, label: "Excessive capitalization", penalty: 3 }
-        ],
+        issues:[
+  // **High Penalty: Major ATS Disruptors**
+  { 
+    regex: /<(table|td|tr|th|border=|cellpadding|cellspacing)/i, 
+    label: "Tables detected", 
+    penalty: 50,  
+    fix: "Replace tables with bullet points or single-column layouts."
+  },
+  { 
+    regex: /<(img|svg|figure|alt="[^"]*")/i, 
+    label: "Images/graphics with embedded text", 
+    penalty: 50,  
+    fix: "Remove images or ensure all text is duplicated in plain format."
+  },
+  { 
+    regex: /<(header|footer|h\d)[^>]*>/i, 
+    label: "Headers/footers", 
+    penalty: 30,  
+    fix: "Move critical content (contact info, skills) into the document body."
+  },
+
+  // **Medium Penalty: Risky Formatting**
+  { 
+    regex: /<(div|span|style)[^>]*>|class=/i, 
+    label: "Complex HTML/CSS", 
+    penalty: 20,  
+    fix: "Use plain text with minimal formatting (bold/italics only)."
+  },
+  { 
+    regex: /<(column|multicolumn|textbox)/i, 
+    label: "Multi-column layout", 
+    penalty: 15,  
+    fix: "Use a single-column, linear structure."
+  },
+  { 
+    regex: /<(ul|ol)[^>]*>|&[a-z]+;/i, 
+    label: "HTML entities/lists", 
+    penalty: 10,  
+    fix: "Replace custom bullets with asterisks (*) or hyphens (-)."
+  },
+
+  // **Low Penalty: Minor but Problematic**
+  { 
+    regex: /\n{4,}/g, 
+    label: "Excessive blank lines", 
+    penalty: 10,  
+    fix: "Limit to 1-2 line breaks between sections."
+  },
+  { 
+    regex: / {3,}/g, 
+    label: "Inconsistent spacing", 
+    penalty: 5,  
+    fix: "Use consistent single spaces between words."
+  },
+  { 
+    regex: /[^\x00-\x7F]/g, 
+    label: "Non-ASCII characters", 
+    penalty: 5,  
+    fix: "Replace smart quotes (”“) with straight quotes (\")."
+  }
+],
         recommendations: [
           "Use a simple one-column layout with clear section headings",
           "Avoid tables, headers, and footers - they confuse ATS systems",
@@ -154,11 +203,11 @@ createApp({
         ]
       },
       sections: [
-        { name: "contact", alternatives: ["phone", "email", "address", "contact info"], required: true, penalty: 20 },
+        { name: "contact", alternatives: ["phone", "email", "address", "contact info", "contact details", "contact information"], required: true, penalty: 10 },
         { name: "summary", alternatives: ["profile", "objective", "professional summary"], required: true, penalty: 15 },
         { name: "experience", alternatives: ["work history", "employment", "professional experience"], required: true, penalty: 30 },
-        { name: "education", alternatives: ["qualifications", "academic background"], required: true, penalty: 20 },
-        { name: "skills", alternatives: ["technical skills", "competencies", "core competencies"], required: true, penalty: 15 },
+        { name: "education", alternatives: ["qualifications", "academic background", "education"], required: true, penalty: 30 },
+        { name: "skills", alternatives: ["technical","skills", "competencies", "core"], required: true, penalty: 30 },
         { name: "certifications", alternatives: ["licenses", "certificates"], required: false, penalty: 0 },
         { name: "projects", alternatives: ["key projects", "selected projects"], required: false, penalty: 0 },
         { name: "languages", alternatives: ["language skills"], required: false, penalty: 0 },
@@ -335,6 +384,7 @@ createApp({
         ]
       }
     };
+    
 
     // Optimization tips and verb examples
     const optimizationTips = ref([
@@ -594,17 +644,17 @@ createApp({
           ats: {
             value: 100,
             weights: {
-              sections: 0.3,
+              sections: 0.6,
               formatting: 0.4,
-              keywords: 0.3
+              keywords: 0.0
             }
           },
           readability: {
             value: 100,
             weights: {
-              sentenceLength: 0.4,
-              paragraphLength: 0.3,
-              passiveVoice: 0.3
+              sentenceLength: 0.3,
+              paragraphLength: 0.1,
+              passiveVoice: 0.6
             }
           },
           impact: {
@@ -618,9 +668,9 @@ createApp({
           design: {
             value: 100,
             weights: {
-              colors: 0.3,
+              colors: 0.6,
               fonts: 0.3,
-              contrast: 0.4
+              contrast: 0.1
             }
           }
         };
@@ -961,12 +1011,11 @@ createApp({
               example: "Break long bullet points into multiple concise ones",
               priority: "low",
               count: 1,
-              penalty: 2
+              penalty: 5
             });
           }
         });
       });
-      
       return results;
     };
 
@@ -986,10 +1035,10 @@ createApp({
         sum + sentence.trim().split(/\s+/).length, 0);
       results.metrics.avgSentenceLength = totalWords / (sentences.length || 1);
 
-      if (results.metrics.avgSentenceLength > 15) {
+      if (results.metrics.avgSentenceLength > 36) {
         results.issues.push({
           message: `Average sentence length is too long (${Math.round(results.metrics.avgSentenceLength)} words)`,
-          fix: "Break long sentences into shorter ones (12-15 words maximum)",
+          fix: "Break long sentences into shorter ones (12-36 words maximum)",
           example: "Instead of 'I managed a team that was responsible for increasing sales by developing new strategies', try 'Managed a sales team. Developed new strategies that increased sales by 25%.'",
           priority: "medium",
           count: 1,
@@ -1000,12 +1049,12 @@ createApp({
       // Paragraph length analysis
       const paragraphs = text.split(/\n\s*\n/).filter(p => p.trim().length > 0);
       results.metrics.longParagraphs = paragraphs.filter(p => 
-        p.split(/\s+/).length > 40).length;
+        p.split(/\s+/).length > 50).length;
 
       if (results.metrics.longParagraphs > 0) {
         results.issues.push({
           message: `${results.metrics.longParagraphs} overly long paragraphs detected`,
-          fix: "Keep paragraphs short (2-4 sentences max)",
+          fix: "Keep paragraphs short (2-5 sentences max)",
           example: "Break long paragraphs into smaller chunks with clear focus",
           priority: "medium",
           count: results.metrics.longParagraphs,
@@ -1182,7 +1231,7 @@ createApp({
           example: `Avoid combinations like ${poorContrast[0].textColor} on ${poorContrast[0].bgColor}`,
           priority: "high",
           count: poorContrast.length,
-          penalty: poorContrast.length * 10
+          penalty: poorContrast.length * 1
         });
       }
       
@@ -1385,9 +1434,9 @@ createApp({
     const calculateOverallScore = (scores) => {
       // Stricter weighting - ATS compatibility is most important
       return Math.round(
-        (scores.ats.value * 0.5) + // 50% weight for ATS
-        (scores.readability.value * 0.2) + 
-        (scores.impact.value * 0.2) +
+        (scores.ats.value * 0.7) + // 70% weight for ATS
+        (scores.readability.value * 0.1) + 
+        (scores.impact.value * 0.1) +
         (scores.design.value * 0.1) // Only 10% for design
       );
     };
