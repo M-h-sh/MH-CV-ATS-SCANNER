@@ -131,7 +131,7 @@ createApp({
         "hard working", "team player", "detail oriented", "self motivated",
         "go getter", "think outside the box", "synergy", "value add",
         "results driven", "fast learner", "excellent communicator",
-        "dynamic", "proactive", "innovative", "strategic",
+        "dynamic", "proactive", "passionate", "innovative", "strategic",
         "proven track record", "seasoned professional", "go-to person"
       ],
       formatting: {
